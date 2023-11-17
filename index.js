@@ -7,7 +7,9 @@ import {NativeBaseProvider} from 'native-base';
 import {persistor, store} from './src/redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {Provider} from 'react-redux';
+import 'react-native-gesture-handler';
 
+// Hide Nativebase libray warnings
 LogBox.ignoreLogs([
   'In React 18, SSRProvider is not necessary and is a noop. You can remove it from your app.',
 ]);

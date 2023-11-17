@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {SafeAreaView, StatusBar, StyleSheet} from 'react-native';
 import {ColorPalette} from './src/shared/utils/colors';
+import Routing from './src/routes';
 
 function App(): JSX.Element {
   useEffect(() => {
@@ -10,6 +11,7 @@ function App(): JSX.Element {
   return (
     <SafeAreaView style={styles.main}>
       <StatusBar />
+      <Routing />
     </SafeAreaView>
   );
 }
