@@ -8,6 +8,7 @@ import {persistor, store} from './src/redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {Provider} from 'react-redux';
 import 'react-native-gesture-handler';
+import msawTheme from './src/shared/utils/theme';
 
 // Hide Nativebase libray warnings
 LogBox.ignoreLogs([
@@ -18,7 +19,7 @@ const Main = () => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <NativeBaseProvider>
+        <NativeBaseProvider theme={msawTheme}>
           <App />
         </NativeBaseProvider>
       </PersistGate>
