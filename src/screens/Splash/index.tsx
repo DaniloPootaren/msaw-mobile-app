@@ -29,7 +29,7 @@ const AppLoaderScreen = () => {
     if (isAuthenticated) {
       return loadData();
     } else {
-      navigation.navigate(RouteName.LOGIN);
+      navigation.navigate(RouteName.PRE_LOGIN);
     }
 
     return () => setPercentageLoaded(0);

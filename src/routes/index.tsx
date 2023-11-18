@@ -26,6 +26,7 @@ import {navigationRef} from '../shared/utils/navigation';
 import SurveyForm from '../screens/SurveyForm';
 import {Text, View} from 'native-base';
 import {ColorPalette} from '../shared/utils/colors';
+import PreLoginScreen from '../screens/PreLogin';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -77,6 +78,7 @@ const StackNavigation = () => {
       ) : (
         <>
           <Stack.Screen name={RouteName.SPLASH} component={SplashScreen} />
+          <Stack.Screen name={RouteName.PRE_LOGIN} component={PreLoginScreen} />
           <Stack.Screen name={RouteName.LOGIN} component={LoginScreen} />
         </>
       )}

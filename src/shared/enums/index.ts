@@ -6,7 +6,7 @@ export enum RouteName {
   HOME_PAGE = 'Home Page',
   SPLASH = 'Splash',
   SURVEY_FORM = 'Survey Form',
-  AUTHENTICATION = 'Authentication',
+  PRE_LOGIN = 'Pre Login',
 }
 
 export enum WeatherCondition {
