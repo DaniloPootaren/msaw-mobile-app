@@ -10,7 +10,7 @@ import ProgressBar from '../../shared/components/ProgressBar';
 import Background from '../../assets/images/splashscreen.png';
 import {appDataAction} from '../../redux/actions/appData';
 
-const AppLoaderScreen = () => {
+const SplashScreen = () => {
   const isAuthenticated = !!useSelector((state: RootState) => state).auth.data
     .access_token;
 
@@ -70,4 +70,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AppLoaderScreen;
+export default SplashScreen;
