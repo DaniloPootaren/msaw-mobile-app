@@ -1,6 +1,7 @@
 declare module '*.jpg';
 declare module '*.png';
 declare module '*.jpeg';
+declare module 'react-native-radio-button';
 declare module '*.svg' {
   import React from 'react';
   import {SvgProps} from 'react-native-svg';

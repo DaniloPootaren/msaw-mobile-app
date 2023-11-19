@@ -11,4 +11,5 @@ export const ColorPalette = {
   overlay: '#00000040',
   text: '#F4F4F4',
   inputDisabled: '#F2F4F9',
+  radioOuter: '#edeff0',
 };

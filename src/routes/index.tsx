@@ -68,6 +68,7 @@ const StackNavigation = () => {
       initialRouteName={RouteName.SPLASH}>
       {isAuthenticated && hasRole ? (
         <>
+          <Stack.Screen name={RouteName.SPLASH} component={SplashScreen} />
           <Stack.Screen name={RouteName.HOME} component={DrawerNavigation} />
           <Stack.Screen
             name={RouteName.SURVEY_FORM}

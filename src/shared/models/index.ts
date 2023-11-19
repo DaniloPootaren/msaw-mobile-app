@@ -239,3 +239,8 @@ export interface Breed {
 export interface FetchBreedsResponse {
   data: Breed[];
 }
+
+export interface BindValue {
+  value: any;
+  bind: string;
+}
