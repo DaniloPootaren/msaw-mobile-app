@@ -38,15 +38,10 @@ const StrayDog = (props: Props) => {
     useSelector((state: RootState) => state).appData.breeds?.data || [];
   const userId = useSelector((state: RootState) => state).auth.me?.data.id;
 
-  useEffect(() => {
-    Geolocation.getCurrentPosition(info =>
-      setCoordinate([info.coords.latitude, info.coords.longitude]),
-    );
-  }, []);
-
   const {
     control,
     handleSubmit,
+    setValue,
     formState: {errors},
   } = useForm<any>({
     defaultValues: {
@@ -74,6 +69,15 @@ const StrayDog = (props: Props) => {
     },
     // resolver: yupResolver(schema.surveyResultSchema),
   });
+
+  useEffect(() => {
+    Geolocation.getCurrentPosition(info => {
+      setValue('geo_location', {
+        coordinates: [info.coords.latitude, info.coords.longitude],
+        type: CoordinateType.Point,
+      });
+    });
+  }, [setValue]);
 
   const handleHasMicrochip = (val: YES_NO, callback: () => void) => {
     setHasMicrochip(val === YES_NO.YES);

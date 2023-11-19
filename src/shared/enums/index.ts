@@ -39,7 +39,7 @@ export enum HealthCondition {
 }
 
 export enum CoordinateType {
-  Point,
+  Point = 'Point',
 }
 
 export enum PetAge {
