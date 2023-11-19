@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, Modal, StyleSheet} from 'react-native';
 import {AlertCircle} from 'lucide-react-native';
-import {ColorPalette} from '../../../constants/colors';
+import {ColorPalette} from '../../../utils/colors';
 
 interface Props {
   isVisible: boolean;

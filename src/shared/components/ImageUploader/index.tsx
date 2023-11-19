@@ -63,7 +63,7 @@ const ImageUploader = (props: Props) => {
         <HStack alignItems="center">
           <ImageUploadIcon />
           <TouchableOpacity onPress={() => setOpenModal(true)}>
-            <View ml={16}>
+            <View ml={5}>
               <Text fontSize={14} fontWeight="700" color={ColorPalette.primary}>
                 Take / Upload
               </Text>
@@ -73,7 +73,7 @@ const ImageUploader = (props: Props) => {
         </HStack>
 
         {imageUri && (
-          <HStack justifyContent="space-evenly" w={80}>
+          <HStack justifyContent="space-evenly" w={'10%'}>
             <TouchableOpacity onPress={() => setOpenModal(true)}>
               <EditIcon />
             </TouchableOpacity>

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {BindValue} from '../../models';
 import RadioButton from 'react-native-radio-button';
-import {HStack, Text} from 'native-base';
+import {HStack, Text, VStack, View} from 'native-base';
 import {ColorPalette} from '../../utils/colors';
 import {StyleSheet} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -12,17 +12,19 @@ export enum RadioLayout {
 }
 
 interface Props {
-  options: BindValue[];
+  options: BindValue[] | string[];
   onChange: (val: string) => void;
   layout?: RadioLayout;
+  value?: any;
+  horizontal?: boolean;
 }
 
 const RadioButtonGroup = (props: Props) => {
-  const {options, onChange, layout} = props;
-  const [selectedId, setSelectedId] = useState('');
+  const {options, onChange, layout, value, horizontal} = props;
+  const [selectedItem, setSelectedItem] = useState('');
 
   const handleRadio = (val: string) => {
-    setSelectedId(val);
+    setSelectedItem(val);
     onChange(val);
   };
 
@@ -30,18 +32,24 @@ const RadioButtonGroup = (props: Props) => {
     flexDirection: layout === RadioLayout.LEFT ? 'row-reverse' : 'row',
   };
 
-  return (
+  const renderRadio = () => (
     <>
-      {options.map(item => {
+      {options.map((item: BindValue | string) => {
         return (
           <TouchableOpacity
-            onPress={() => handleRadio(item.value)}
-            key={item.value}>
-            <HStack style={[styles.radioContainer, _style]}>
-              <Text color={ColorPalette.paleGreyText}>{item.bind}</Text>
+            onPress={() => handleRadio((item as BindValue)?.value || item)}
+            key={(item as BindValue).value || item}>
+            <HStack space={1} style={[styles.radioContainer, _style]}>
+              <Text color={ColorPalette.paleGreyText}>
+                {(item as BindValue).bind || (item as string)}
+              </Text>
               <RadioButton
-                isSelected={item.value === selectedId}
-                onPress={() => handleRadio(item.value)}
+                isSelected={
+                  value === (item as BindValue)?.bind ||
+                  (item as BindValue)?.value === selectedItem ||
+                  item === selectedItem
+                }
+                onPress={() => handleRadio((item as BindValue)?.value || item)}
                 size={12}
                 innerColor={ColorPalette.primary}
                 outerColor={ColorPalette.radioOuter}
@@ -51,6 +59,14 @@ const RadioButtonGroup = (props: Props) => {
         );
       })}
     </>
+  );
+
+  return horizontal ? (
+    <HStack space={5} alignItems="center">
+      {renderRadio()}
+    </HStack>
+  ) : (
+    <View>{renderRadio()}</View>
   );
 };
 
