@@ -19,8 +19,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {convertDateString} from '../../../shared/utils/date';
 import Calendar from '../../../assets/icons/calendar.svg';
 import Geolocation from '@react-native-community/geolocation';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {Input, Select, Text} from 'native-base';
+import {Button, HStack, Input, Select, Text} from 'native-base';
 import RadioButtonGroup, {
   RadioLayout,
 } from '../../../shared/components/RadioButtonGroup';
@@ -42,7 +41,8 @@ const StrayDog = (props: Props) => {
     control,
     handleSubmit,
     setValue,
-    formState: {errors},
+    trigger,
+    formState: {errors, isValid},
   } = useForm<any>({
     defaultValues: {
       age: null,
@@ -63,11 +63,11 @@ const StrayDog = (props: Props) => {
       remarks: null,
       sex: null,
       staff: userId,
-      status: null,
+      status: 'Submitted',
       survey_information: id,
       weather_condition: null,
     },
-    // resolver: yupResolver(schema.surveyResultSchema),
+    resolver: yupResolver(schema.surveyResultSchema),
   });
 
   useEffect(() => {
@@ -79,31 +79,31 @@ const StrayDog = (props: Props) => {
     });
   }, [setValue]);
 
-  const handleHasMicrochip = (val: YES_NO, callback: () => void) => {
+  const handleHasMicrochip = (val: YES_NO) => {
+    setValue('has_microchip', val);
     setHasMicrochip(val === YES_NO.YES);
-    callback();
   };
 
   const handleImageUpload = async (imgURI: string) => {
-    console.log('imgURI', imgURI);
     try {
-      const data = (await filesApi.uploadImageFile(imgURI)).data;
-      console.log('>>>', data);
+      const response = (await filesApi.uploadImageFile(imgURI)).data;
+      setValue('primary_image', response.data.id);
     } catch (e) {
-      console.log(e);
+      Alert.alert('Server Error', 'Could not upload image');
     }
   };
 
-  const onSubmit = () =>
-    Alert.alert('Test', JSON.stringify(control._formValues));
+  const onSubmit = () => {
+    trigger();
+    if (isValid) {
+      Alert.alert('value', JSON.stringify(control._formValues));
+    }
+  };
 
   return (
     <>
-      <TouchableOpacity onPress={() => onSubmit()}>
-        <Text>Test</Text>
-      </TouchableOpacity>
       <Text style={styles.formTitle}>General Info</Text>
-      <Panel title="Survey">
+      <Panel title="Survey" number={1}>
         <Input
           backgroundColor={ColorPalette.inputDisabled}
           placeholder="Survey Name"
@@ -111,7 +111,7 @@ const StrayDog = (props: Props) => {
           editable={false}
         />
       </Panel>
-      <Panel title="Created on">
+      <Panel title="Created on" number={2}>
         <Input
           justifyContent="center"
           alignItems="center"
@@ -123,7 +123,11 @@ const StrayDog = (props: Props) => {
           leftElement={<Calendar color="black" style={{marginLeft: 5}} />}
         />
       </Panel>
-      <Panel title="Location">
+      <Panel
+        title="Location"
+        number={3}
+        hasError={!!errors.Location}
+        errorMessage={errors.Location?.message as string}>
         <Controller
           control={control}
           render={({field: {onChange, onBlur, value}}) => (
@@ -137,7 +141,11 @@ const StrayDog = (props: Props) => {
           name="Location"
         />
       </Panel>
-      <Panel title="Weather Condition">
+      <Panel
+        title="Weather Condition"
+        number={4}
+        hasError={!!errors.weather_condition}
+        errorMessage={errors.weather_condition?.message as string}>
         <Controller
           control={control}
           render={({field: {onChange, value}}) => (
@@ -158,7 +166,11 @@ const StrayDog = (props: Props) => {
         />
       </Panel>
       <Text style={styles.formTitle}>Dog Info</Text>
-      <Panel title="Is the dog sterilized?">
+      <Panel
+        title="Is the dog sterilized?"
+        number={5}
+        hasError={!!errors.is_sterilized}
+        errorMessage={errors.is_sterilized?.message as string}>
         <Controller
           control={control}
           render={({field: {onChange, value}}) => (
@@ -173,7 +185,11 @@ const StrayDog = (props: Props) => {
           name="is_sterilized"
         />
       </Panel>
-      <Panel title="Sex:">
+      <Panel
+        title="Sex:"
+        number={6}
+        hasError={!!errors.sex}
+        errorMessage={errors.sex?.message as string}>
         <Controller
           control={control}
           render={({field: {onChange, value}}) => (
@@ -188,13 +204,17 @@ const StrayDog = (props: Props) => {
           name="sex"
         />
       </Panel>
-      <Panel title="Identifying Marks">
+      <Panel
+        title="Identifying Marks"
+        number={7}
+        hasError={!!errors.identifying_marks}
+        errorMessage={errors.identifying_marks?.message as string}>
         <Controller
           control={control}
           render={({field: {onChange, onBlur, value}}) => (
             <Input
               placeholder="Insert Identifying marks"
-              onChange={onChange}
+              onChangeText={onChange}
               value={value}
               onBlur={onBlur}
             />
@@ -202,7 +222,11 @@ const StrayDog = (props: Props) => {
           name="identifying_marks"
         />
       </Panel>
-      <Panel title="Age">
+      <Panel
+        title="Age"
+        number={8}
+        hasError={!!errors.age}
+        errorMessage={errors.age?.message as string}>
         <Controller
           control={control}
           render={({field: {onChange, value}}) => (
@@ -217,7 +241,11 @@ const StrayDog = (props: Props) => {
           name="age"
         />
       </Panel>
-      <Panel title="Breed">
+      <Panel
+        title="Breed"
+        number={9}
+        hasError={!!errors.dog_breed}
+        errorMessage={errors.dog_breed?.message as string}>
         <Controller
           control={control}
           render={({field: {onChange}}) => (
@@ -238,10 +266,14 @@ const StrayDog = (props: Props) => {
               ))}
             </Select>
           )}
-          name="breed"
+          name="dog_breed"
         />
       </Panel>
-      <Panel title="Health state">
+      <Panel
+        title="Health state"
+        number={10}
+        hasError={!!errors.health_state}
+        errorMessage={errors.health_state?.message as string}>
         <Controller
           control={control}
           render={({field: {onChange, value}}) => (
@@ -260,7 +292,11 @@ const StrayDog = (props: Props) => {
           name="health_state"
         />
       </Panel>
-      <Panel title="Aggressive">
+      <Panel
+        title="Aggressive"
+        number={11}
+        hasError={!!errors.is_aggressive}
+        errorMessage={errors.is_aggressive?.message as string}>
         <Controller
           control={control}
           render={({field: {onChange, value}}) => (
@@ -275,7 +311,11 @@ const StrayDog = (props: Props) => {
           name="is_aggressive"
         />
       </Panel>
-      <Panel title="Living with other pets">
+      <Panel
+        title="Living with other pets"
+        number={12}
+        hasError={!!errors.is_living_with_other_dogs}
+        errorMessage={errors.is_living_with_other_dogs?.message as string}>
         <Controller
           control={control}
           render={({field: {onChange, value}}) => (
@@ -290,7 +330,11 @@ const StrayDog = (props: Props) => {
           name="is_living_with_other_dogs"
         />
       </Panel>
-      <Panel title="Remarks">
+      <Panel
+        title="Remarks"
+        number={13}
+        hasError={!!errors.remarks}
+        errorMessage={errors.remarks?.message as string}>
         <Controller
           control={control}
           render={({field: {onChange, onBlur, value}}) => (
@@ -304,23 +348,31 @@ const StrayDog = (props: Props) => {
           name="remarks"
         />
       </Panel>
-      <Panel title="Does it has a microchip number?">
+      <Panel
+        title="Does it has a microchip number?"
+        number={14}
+        hasError={!!errors.has_microchip}
+        errorMessage={errors.has_microchip?.message as string}>
         <Controller
           control={control}
-          render={({field: {onChange, value}}) => (
+          render={({field: {value}}) => (
             <RadioButtonGroup
               options={[YES_NO.YES, YES_NO.NO]}
-              onChange={e => handleHasMicrochip(e as any, onChange)}
+              onChange={e => handleHasMicrochip(e as any)}
               layout={RadioLayout.LEFT}
               value={value}
               horizontal
             />
           )}
-          name="is_sterilized"
+          name="has_microchip"
         />
       </Panel>
       {hasMicrochip && (
-        <Panel title="Insert microchip number">
+        <Panel
+          title="Insert microchip number"
+          number={15}
+          hasError={!!errors.microchip_serial}
+          errorMessage={errors.microchip_serial?.message as string}>
           <Controller
             control={control}
             render={({field: {onChange, onBlur, value}}) => (
@@ -337,6 +389,15 @@ const StrayDog = (props: Props) => {
       )}
 
       <ImageUploader onChange={handleImageUpload} />
+      <HStack flexDirection="row-reverse" mt={5}>
+        <Button
+          onPress={() => onSubmit()}
+          backgroundColor={
+            isValid ? ColorPalette.primary : ColorPalette.disabledButton
+          }>
+          <Text color={ColorPalette.white}>Submit form</Text>
+        </Button>
+      </HStack>
     </>
   );
 };
