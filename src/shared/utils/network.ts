@@ -24,13 +24,13 @@ export const httpClient = (): Axios => {
           'Session Expired',
           'Your session has expired. Please log in to continue.',
         );
-        store.dispatch(clearAuth());
-        navigationRef.current?.navigate(RouteName.LOGIN, {shouldGoBack: true});
       }
 
       if (error.response?.status === 403) {
         Alert.alert('Permission Denied', 'Please contact your administrator');
       }
+      store.dispatch(clearAuth());
+      navigationRef.current?.navigate(RouteName.LOGIN, {shouldGoBack: true});
       return Promise.reject(error);
     },
   );
