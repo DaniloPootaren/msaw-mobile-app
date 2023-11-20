@@ -29,7 +29,7 @@ const surveyResultSchema = yup.object({
 });
 
 const ownerSurveyResultSchema = yup.object().shape({
-  Do_you_know_that_the_MSAW_offers_free_sterilisation_for_your_dog: yup
+  Do_you_know_that_the_MSAW_offers_free_sterilsation_for_your_dog: yup
     .string()
     .required('Field required'),
   How_many_male_and_female_dogs_do_you_have: yup
@@ -49,7 +49,7 @@ const ownerSurveyResultSchema = yup.object().shape({
     .string()
     .required('Field required'),
   are_your_pets_registered: yup.string().required('Field required'),
-  are_your_pets_sterilised: yup.string().required('Field required'),
+  are_your_pets_sterilized: yup.string().required('Field required'),
   do_you_have_secured_place_for_your_pets_at_your_place: yup
     .string()
     .required('Field required'),
