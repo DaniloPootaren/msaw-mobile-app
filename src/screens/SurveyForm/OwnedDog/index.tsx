@@ -93,30 +93,31 @@ const OwnedDog = (props: Props) => {
 
   const onSubmit = async () => {
     trigger();
-    if (isValid) {
-      try {
-        setLoading(true);
-        await formApi.submitStrayDogForm(control._formValues as SurveyResult);
-        Snackbar.show({
-          text: 'Form Submitted Successfully.',
-          duration: Snackbar.LENGTH_LONG,
-          marginBottom: 100,
-          textColor: ColorPalette.green,
-        });
-        navigation.goBack();
-      } catch (e) {
-        Alert.alert('Error While submitting survey', JSON.stringify(e));
-      } finally {
-        setLoading(false);
-      }
-    } else {
-      Snackbar.show({
-        text: 'Form contains errors.',
-        duration: Snackbar.LENGTH_SHORT,
-        marginBottom: 100,
-        backgroundColor: ColorPalette.primary,
-      });
-    }
+    console.log(control._formValues);
+    // if (isValid) {
+    //   try {
+    //     setLoading(true);
+    //     await formApi.submitStrayDogForm(control._formValues as SurveyResult);
+    //     Snackbar.show({
+    //       text: 'Form Submitted Successfully.',
+    //       duration: Snackbar.LENGTH_LONG,
+    //       marginBottom: 100,
+    //       textColor: ColorPalette.green,
+    //     });
+    //     navigation.goBack();
+    //   } catch (e) {
+    //     Alert.alert('Error While submitting survey', JSON.stringify(e));
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // } else {
+    //   Snackbar.show({
+    //     text: 'Form contains errors.',
+    //     duration: Snackbar.LENGTH_SHORT,
+    //     marginBottom: 100,
+    //     backgroundColor: ColorPalette.primary,
+    //   });
+    // }
   };
 
   return (
