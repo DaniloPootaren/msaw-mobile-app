@@ -25,6 +25,7 @@ import RadioButtonGroup, {
 } from '../../../shared/components/RadioButtonGroup';
 import {ColorPalette} from '../../../shared/utils/colors';
 import {filesApi} from '../../../api/files';
+import Snackbar from 'react-native-snackbar';
 
 interface Props {
   survey: Survey;
@@ -39,7 +40,6 @@ const StrayDog = (props: Props) => {
 
   const {
     control,
-    handleSubmit,
     setValue,
     trigger,
     formState: {errors, isValid},
@@ -97,6 +97,13 @@ const StrayDog = (props: Props) => {
     trigger();
     if (isValid) {
       Alert.alert('value', JSON.stringify(control._formValues));
+    } else {
+      Snackbar.show({
+        text: 'Form contains errors.',
+        duration: Snackbar.LENGTH_SHORT,
+        marginBottom: 100,
+        backgroundColor: ColorPalette.primary,
+      });
     }
   };
 
