@@ -109,11 +109,6 @@ const StrayDog = (props: Props) => {
           duration: Snackbar.LENGTH_LONG,
           marginBottom: 100,
           textColor: ColorPalette.green,
-          action: {
-            text: 'OK',
-            textColor: ColorPalette.white,
-            onPress: () => navigation.goBack(),
-          },
         });
         navigation.goBack();
       } catch (e) {
