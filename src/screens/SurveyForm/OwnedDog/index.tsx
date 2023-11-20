@@ -33,6 +33,10 @@ const OwnedDog = (props: Props) => {
   const userId = useSelector((state: RootState) => state).auth.me?.data.id;
   const [loading, setLoading] = useState(false);
 
+  const [showReasonDiscard, setShowReasonDiscard] = useState(false);
+  const [showReasonScaredOfDog, setShowReasonReasonScaredOfDog] =
+    useState(false);
+
   const {
     control,
     setValue,
@@ -82,6 +86,18 @@ const OwnedDog = (props: Props) => {
     resolver: yupResolver(schema.ownerSurveyResultSchema),
   });
 
+  const handleDiscardOfDogs = (val: string) => {
+    setValue(
+      'have_you_ever_found_yourself_in_a_situation_where_you_had_to_discard_a_pet',
+      val,
+    );
+    setShowReasonDiscard(val === 'Yes');
+  };
+  const handleScaredOfDogs = (val: string) => {
+    setValue('are_you_scared_of_stray_dogs', val);
+    setShowReasonReasonScaredOfDog(val === 'Yes');
+  };
+
   useEffect(() => {
     Geolocation.getCurrentPosition(info => {
       setValue('geo_location', {
@@ -94,6 +110,7 @@ const OwnedDog = (props: Props) => {
   const onSubmit = async () => {
     trigger();
     console.log(control._formValues);
+    console.log(errors);
     // if (isValid) {
     //   try {
     //     setLoading(true);
@@ -488,10 +505,10 @@ const OwnedDog = (props: Props) => {
         }>
         <Controller
           control={control}
-          render={({field: {onChange, value}}) => (
+          render={({field: {value}}) => (
             <RadioButtonGroup
               options={[YES_NO.YES, YES_NO.NO]}
-              onChange={onChange}
+              onChange={handleDiscardOfDogs}
               layout={RadioLayout.LEFT}
               value={value}
               horizontal
@@ -500,24 +517,27 @@ const OwnedDog = (props: Props) => {
           name="have_you_ever_found_yourself_in_a_situation_where_you_had_to_discard_a_pet"
         />
       </Panel>
-      <Panel
-        title="If yes, state which reason"
-        number={20}
-        hasError={!!errors.if_yes_state_which_reason}
-        errorMessage={errors.if_yes_state_which_reason?.message as string}>
-        <Controller
-          control={control}
-          render={({field: {onChange, onBlur, value}}) => (
-            <Input
-              placeholder="State which reason"
-              onChangeText={onChange}
-              onBlur={onBlur}
-              value={value}
-            />
-          )}
-          name="if_yes_state_which_reason"
-        />
-      </Panel>
+      {showReasonDiscard && (
+        <Panel
+          title="If yes, state which reason"
+          number={20}
+          hasError={!!errors.if_yes_state_which_reason}
+          errorMessage={errors.if_yes_state_which_reason?.message as string}>
+          <Controller
+            control={control}
+            render={({field: {onChange, onBlur, value}}) => (
+              <Input
+                placeholder="State which reason"
+                onChangeText={onChange}
+                onBlur={onBlur}
+                value={value}
+              />
+            )}
+            name="if_yes_state_which_reason"
+          />
+        </Panel>
+      )}
+
       <Text style={styles.formTitle}>Stray Dogs</Text>
       <Panel
         title="Are there stray dogs near your home/ place of work?"
@@ -548,10 +568,10 @@ const OwnedDog = (props: Props) => {
         errorMessage={errors.are_you_scared_of_stray_dogs?.message as string}>
         <Controller
           control={control}
-          render={({field: {onChange, value}}) => (
+          render={({field: {value}}) => (
             <RadioButtonGroup
               options={[YES_NO.YES, YES_NO.NO]}
-              onChange={onChange}
+              onChange={handleScaredOfDogs}
               layout={RadioLayout.LEFT}
               value={value}
               horizontal
@@ -560,24 +580,27 @@ const OwnedDog = (props: Props) => {
           name="are_you_scared_of_stray_dogs"
         />
       </Panel>
-      <Panel
-        title="If yes, state which reason"
-        number={23}
-        hasError={!!errors.if_yes_state_reason_why}
-        errorMessage={errors.if_yes_state_reason_why?.message as string}>
-        <Controller
-          control={control}
-          render={({field: {onChange, onBlur, value}}) => (
-            <Input
-              placeholder="State which reason"
-              onChangeText={onChange}
-              onBlur={onBlur}
-              value={value}
-            />
-          )}
-          name="if_yes_state_reason_why"
-        />
-      </Panel>
+      {showReasonScaredOfDog && (
+        <Panel
+          title="If yes, state which reason"
+          number={23}
+          hasError={!!errors.if_yes_state_reason_why}
+          errorMessage={errors.if_yes_state_reason_why?.message as string}>
+          <Controller
+            control={control}
+            render={({field: {onChange, onBlur, value}}) => (
+              <Input
+                placeholder="State which reason"
+                onChangeText={onChange}
+                onBlur={onBlur}
+                value={value}
+              />
+            )}
+            name="if_yes_state_reason_why"
+          />
+        </Panel>
+      )}
+
       <Panel
         title="Have you ever fed or cared for a stray dog? "
         number={24}
