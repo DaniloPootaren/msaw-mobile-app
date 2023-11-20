@@ -270,3 +270,51 @@ export interface ImageUploadResponse {
     metadata: {};
   };
 }
+
+export interface OwnerSurveyResult {
+  Do_you_know_that_the_MSAW_offers_free_sterilsation_for_your_dog:
+    | string
+    | null;
+  How_many_male_and_female_dogs_do_you_have: string | null;
+  How_many_pet_dogs__do_you_have: string | null;
+  Which_veterinary_doctor_do_you_visit_for_your_pets: string | null;
+  age_group: string | null;
+  age_of_pets: string | null;
+  are_there_stray_dogs_near_your_home_place_of_work: string | null;
+  are_you_scared_of_stray_dogs: string | null;
+  are_your_pets_let_free_on_the_streets: string | null;
+  are_your_pets_registered: string | null;
+  are_your_pets_sterilized: string | null;
+  date_created: string | null;
+  date_updated: string | null;
+  do_you_have_secured_place_for_your_pets_at_your_place: string | null;
+  do_you_know_that_MSAW_is_Ex_MSPCA: string | null;
+  do_you_think_that_stray_dogs_should_be_removed_from_the_streets:
+    | string
+    | null;
+  do_you_think_that_the_stray_should_be_released_back_to_their_place_after_sterilisation:
+    | string
+    | null;
+  education: string | null;
+  gender: string | null;
+  geo_location: {
+    coordinates: number[] | null;
+    type: CoordinateType;
+  };
+  have_you_ever_adopted_a_pet_from_a_nonprofit_organisation: string | null;
+  have_you_ever_fed_or_cared_for_a_stray_dog: string | null;
+  have_you_ever_found_yourself_in_a_situation_where_you_had_to_discard_a_pet:
+    | string
+    | null;
+  have_you_ever_had_a_pet_which_got_lost: string | null;
+  have_you_heard_of_the_CNR_project: string | null;
+  if_yes_state_reason_why: string | null;
+  if_yes_state_which_reason: string | null;
+  location: string | null;
+  monthly_income_status_of_earner: string | null;
+  staff: string | null;
+  status: string | null;
+  survey_information: number;
+  what_are_your_suggestions_to_the_MSAW: string | null;
+  what_is_your_opinion_about_the_MSAW: string | null;
+}
