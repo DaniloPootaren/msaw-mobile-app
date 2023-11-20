@@ -285,8 +285,6 @@ export interface OwnerSurveyResult {
   are_your_pets_let_free_on_the_streets: string | null;
   are_your_pets_registered: string | null;
   are_your_pets_sterilized: string | null;
-  date_created: string | null;
-  date_updated: string | null;
   do_you_have_secured_place_for_your_pets_at_your_place: string | null;
   do_you_know_that_MSAW_is_Ex_MSPCA: string | null;
   do_you_think_that_stray_dogs_should_be_removed_from_the_streets:
@@ -317,4 +315,5 @@ export interface OwnerSurveyResult {
   survey_information: number;
   what_are_your_suggestions_to_the_MSAW: string | null;
   what_is_your_opinion_about_the_MSAW: string | null;
+  weather_condition: string | null;
 }
