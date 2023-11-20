@@ -13,4 +13,5 @@ export const ColorPalette = {
   inputDisabled: '#F2F4F9',
   radioOuter: '#edeff0',
   red: 'red',
+  green: '#65FC8F',
 };

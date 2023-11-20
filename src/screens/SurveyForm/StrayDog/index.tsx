@@ -5,7 +5,7 @@ import {RootState} from '../../../redux';
 import ImageUploader from '../../../shared/components/ImageUploader';
 import {Alert, StyleSheet} from 'react-native';
 import {Controller, useForm} from 'react-hook-form';
-import {Survey} from '../../../shared/models';
+import {Survey, SurveyResult} from '../../../shared/models';
 import {
   CoordinateType,
   HealthCondition,
@@ -26,6 +26,9 @@ import RadioButtonGroup, {
 import {ColorPalette} from '../../../shared/utils/colors';
 import {filesApi} from '../../../api/files';
 import Snackbar from 'react-native-snackbar';
+import {formApi} from '../../../api/form';
+import Loader from '../../../shared/components/Loader';
+import {useNavigation} from '@react-navigation/native';
 
 interface Props {
   survey: Survey;
@@ -33,10 +36,12 @@ interface Props {
 
 const StrayDog = (props: Props) => {
   const {id, name, date_created} = props.survey;
+  const navigation = useNavigation();
   const [hasMicrochip, setHasMicrochip] = useState<boolean | null>();
   const dogBreeds =
     useSelector((state: RootState) => state).appData.breeds?.data || [];
   const userId = useSelector((state: RootState) => state).auth.me?.data.id;
+  const [loading, setLoading] = useState(false);
 
   const {
     control,
@@ -93,10 +98,29 @@ const StrayDog = (props: Props) => {
     }
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     trigger();
     if (isValid) {
-      Alert.alert('value', JSON.stringify(control._formValues));
+      try {
+        setLoading(true);
+        await formApi.submitStrayDogForm(control._formValues as SurveyResult);
+        Snackbar.show({
+          text: 'Form Submitted Successfully.',
+          duration: Snackbar.LENGTH_LONG,
+          marginBottom: 100,
+          textColor: ColorPalette.green,
+          action: {
+            text: 'OK',
+            textColor: ColorPalette.white,
+            onPress: () => navigation.goBack(),
+          },
+        });
+        navigation.goBack();
+      } catch (e) {
+        Alert.alert('Error While submitting survey', JSON.stringify(e));
+      } finally {
+        setLoading(false);
+      }
     } else {
       Snackbar.show({
         text: 'Form contains errors.',
@@ -396,6 +420,7 @@ const StrayDog = (props: Props) => {
       )}
 
       <ImageUploader onChange={handleImageUpload} />
+      {loading && <Loader />}
       <HStack flexDirection="row-reverse" mt={5}>
         <Button
           onPress={() => onSubmit()}
