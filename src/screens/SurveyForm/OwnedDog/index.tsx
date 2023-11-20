@@ -79,7 +79,7 @@ const OwnedDog = (props: Props) => {
       Which_veterinary_doctor_do_you_visit_for_your_pets: null,
       weather_condition: null,
     },
-    resolver: yupResolver(schema.surveyResultSchema),
+    resolver: yupResolver(schema.ownerSurveyResultSchema),
   });
 
   useEffect(() => {
