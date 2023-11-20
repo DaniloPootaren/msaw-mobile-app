@@ -25,6 +25,7 @@ import RadioButtonGroup, {
   RadioLayout,
 } from '../../../shared/components/RadioButtonGroup';
 import {ColorPalette} from '../../../shared/utils/colors';
+import {filesApi} from '../../../api/files';
 
 interface Props {
   survey: Survey;
@@ -32,7 +33,6 @@ interface Props {
 
 const StrayDog = (props: Props) => {
   const {id, name, date_created} = props.survey;
-  const [coordinate, setCoordinate] = useState<number[]>([]);
   const [hasMicrochip, setHasMicrochip] = useState<boolean | null>();
   const dogBreeds =
     useSelector((state: RootState) => state).appData.breeds?.data || [];
@@ -48,7 +48,7 @@ const StrayDog = (props: Props) => {
       age: null,
       dog_breed: null,
       geo_location: {
-        coordinates: coordinate,
+        coordinates: [],
         type: CoordinateType.Point,
       },
       has_microchip: null,
@@ -73,7 +73,7 @@ const StrayDog = (props: Props) => {
   useEffect(() => {
     Geolocation.getCurrentPosition(info => {
       setValue('geo_location', {
-        coordinates: [info.coords.latitude, info.coords.longitude],
+        coordinates: [info.coords.longitude, info.coords.latitude],
         type: CoordinateType.Point,
       });
     });
@@ -82,6 +82,16 @@ const StrayDog = (props: Props) => {
   const handleHasMicrochip = (val: YES_NO, callback: () => void) => {
     setHasMicrochip(val === YES_NO.YES);
     callback();
+  };
+
+  const handleImageUpload = async (imgURI: string) => {
+    console.log('imgURI', imgURI);
+    try {
+      const data = (await filesApi.uploadImageFile(imgURI)).data;
+      console.log('>>>', data);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const onSubmit = () =>
@@ -326,7 +336,7 @@ const StrayDog = (props: Props) => {
         </Panel>
       )}
 
-      <ImageUploader />
+      <ImageUploader onChange={handleImageUpload} />
     </>
   );
 };

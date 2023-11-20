@@ -244,3 +244,29 @@ export interface BindValue {
   value: any;
   bind: string;
 }
+
+export interface ImageUploadResponse {
+  data: {
+    id: string;
+    storage: string;
+    filename_disk: string;
+    filename_download: string;
+    title: string;
+    type: string;
+    folder: string;
+    uploaded_by: string;
+    uploaded_on: string;
+    modified_by: null;
+    modified_on: string;
+    charset: string;
+    filesize: number;
+    width: number;
+    height: number;
+    duration: number;
+    embed: number;
+    description: string;
+    location: string;
+    tags: string;
+    metadata: {};
+  };
+}
