@@ -4,7 +4,7 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../../redux';
 import {Alert, StyleSheet} from 'react-native';
 import {Controller, useForm} from 'react-hook-form';
-import {Survey, SurveyResult} from '../../../shared/models';
+import {OwnerSurveyResult, Survey} from '../../../shared/models';
 import {CoordinateType, WeatherCondition, YES_NO} from '../../../shared/enums';
 import {schema} from '../helpers/schema';
 import {yupResolver} from '@hookform/resolvers/yup';
@@ -109,32 +109,32 @@ const OwnedDog = (props: Props) => {
 
   const onSubmit = async () => {
     trigger();
-    console.log(control._formValues);
-    console.log(errors);
-    // if (isValid) {
-    //   try {
-    //     setLoading(true);
-    //     await formApi.submitStrayDogForm(control._formValues as SurveyResult);
-    //     Snackbar.show({
-    //       text: 'Form Submitted Successfully.',
-    //       duration: Snackbar.LENGTH_LONG,
-    //       marginBottom: 100,
-    //       textColor: ColorPalette.green,
-    //     });
-    //     navigation.goBack();
-    //   } catch (e) {
-    //     Alert.alert('Error While submitting survey', JSON.stringify(e));
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // } else {
-    //   Snackbar.show({
-    //     text: 'Form contains errors.',
-    //     duration: Snackbar.LENGTH_SHORT,
-    //     marginBottom: 100,
-    //     backgroundColor: ColorPalette.primary,
-    //   });
-    // }
+    if (isValid) {
+      try {
+        setLoading(true);
+        await formApi.submitOwnedDogForm(
+          control._formValues as OwnerSurveyResult,
+        );
+        Snackbar.show({
+          text: 'Form Submitted Successfully.',
+          duration: Snackbar.LENGTH_LONG,
+          marginBottom: 100,
+          textColor: ColorPalette.green,
+        });
+        navigation.goBack();
+      } catch (e) {
+        Alert.alert('Error While submitting survey', JSON.stringify(e));
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      Snackbar.show({
+        text: 'Form contains errors.',
+        duration: Snackbar.LENGTH_SHORT,
+        marginBottom: 100,
+        backgroundColor: ColorPalette.primary,
+      });
+    }
   };
 
   return (
